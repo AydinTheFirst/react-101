@@ -1,10 +1,17 @@
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@nextui-org/react";
 import React from "react";
 
 const XoxGame = () => {
   const [squares, setSquares] = React.useState(Array(9).fill(null));
   const [turnOf, setTurnOf] = React.useState("X");
   const [winner, setWinner] = React.useState<string>();
+  const [history, setHistory] = React.useState<number[]>([]);
 
   const calculateWinner = (squares: string[]) => {
     const lines = [
@@ -38,6 +45,7 @@ const XoxGame = () => {
     newSquares[i] = turnOf;
     setSquares(newSquares);
     setTurnOf(turnOf === "X" ? "O" : "X");
+    setHistory([...history, i]);
 
     const winnerLine = calculateWinner(newSquares);
     if (winnerLine) {
@@ -49,6 +57,17 @@ const XoxGame = () => {
     setSquares(Array(9).fill(null));
     setTurnOf("X");
     setWinner(undefined);
+  };
+
+  const handleUndo = () => {
+    if (history.length === 0) return;
+
+    const lastMove = history[history.length - 1];
+    const newSquares = [...squares];
+    newSquares[lastMove] = null;
+    setSquares(newSquares);
+    setTurnOf(turnOf === "X" ? "O" : "X");
+    setHistory(history.slice(0, -1));
   };
 
   const renderSquare = (i: number) => {
@@ -87,12 +106,15 @@ const XoxGame = () => {
               <h2 className="text-2xl font-bold">{`Turn of: ${turnOf}`}</h2>
             )}
           </div>
-          <div className="flex justify-center mt-4">
-            <Button color="primary" onPress={handleReset}>
-              <strong>Reset</strong>
-            </Button>
-          </div>
         </CardBody>
+        <CardFooter className="gap-3 justify-center">
+          <Button color="primary" onPress={handleReset}>
+            <strong>Reset</strong>
+          </Button>
+          <Button color="success" onPress={handleUndo}>
+            <strong>Undo</strong>
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
