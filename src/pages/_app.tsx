@@ -11,7 +11,7 @@ const App = () => {
   return (
     <NextUIProvider>
       <Outlet />
-      <Toaster theme={theme as Theme} />
+      <Toaster richColors theme={theme as Theme} />
     </NextUIProvider>
   );
 };

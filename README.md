@@ -6,3 +6,4 @@ The 100 Days React Challenge is a project that I created to help me learn React.
 
 - Day 1 - XOX Game /xox
 - Day 2 - Reflex Game /reflex
+- Day 3 - Math Game /math
